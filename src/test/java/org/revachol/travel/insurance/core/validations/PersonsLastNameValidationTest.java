@@ -3,7 +3,6 @@ import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
-import org.revachol.travel.insurance.core.ErrorCodeResolver;
 import org.revachol.travel.insurance.rest.TravelCalculatePremiumRequest;
 import org.revachol.travel.insurance.rest.ValidationError;
 import org.junit.jupiter.api.Test;
@@ -17,7 +16,7 @@ import static org.mockito.Mockito.when;
 @ExtendWith(MockitoExtension.class)
 public class PersonsLastNameValidationTest {
     @Mock
-    private ErrorCodeResolver errorCodeResolver;
+    private ValidationErrorFactory errorFactory;
 
     @InjectMocks
     private PersonsLastNameValidation validation;
@@ -26,23 +25,23 @@ public class PersonsLastNameValidationTest {
     public void shouldReturnErrorWhenLastNameNull() {
         TravelCalculatePremiumRequest request = mock(TravelCalculatePremiumRequest.class);
         when(request.getPersonLastName()).thenReturn(null);
-        when(errorCodeResolver.getErrorDescription("ERROR_CODE_6"))
-                .thenReturn("Field personLastName must not be empty!");
+        ValidationError validationError = mock(ValidationError.class);
+        when(errorFactory.buildError("ERROR_CODE_6"))
+                .thenReturn(validationError);
         Optional<ValidationError> errorOpt = validation.execute(request);
         assertTrue(errorOpt.isPresent());
-        assertEquals("ERROR_CODE_6", errorOpt.get().getErrorCode());
-        assertEquals("Field personLastName must not be empty!", errorOpt.get().getDescription());
+        assertSame(errorOpt.get(), validationError);
     }
 
     @Test
     public void shouldReturnErrorWhenLastNameEmpty() {
         TravelCalculatePremiumRequest request = mock(TravelCalculatePremiumRequest.class);
         when(request.getPersonLastName()).thenReturn("");
-        when(errorCodeResolver.getErrorDescription("ERROR_CODE_6"))
-                .thenReturn("Field personLastName must not be empty!");
+        ValidationError validationError = mock(ValidationError.class);
+        when(errorFactory.buildError("ERROR_CODE_6"))
+                .thenReturn(validationError);
         Optional<ValidationError> errorOpt = validation.execute(request);
         assertTrue(errorOpt.isPresent());
-        assertEquals("ERROR_CODE_6", errorOpt.get().getErrorCode());
-        assertEquals("Field personLastName must not be empty!", errorOpt.get().getDescription());
+        assertSame(errorOpt.get(), validationError);
     }
 }

@@ -4,7 +4,6 @@ import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
-import org.revachol.travel.insurance.core.ErrorCodeResolver;
 import org.revachol.travel.insurance.rest.TravelCalculatePremiumRequest;
 import org.revachol.travel.insurance.rest.ValidationError;
 import org.junit.jupiter.api.Test;
@@ -12,8 +11,7 @@ import org.junit.jupiter.api.Test;
 import java.time.LocalDate;
 import java.util.Optional;
 
-import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertTrue;
+import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
 
@@ -21,7 +19,7 @@ import static org.mockito.Mockito.when;
 public class DateToLessThenFromValidationTest {
 
     @Mock
-    private ErrorCodeResolver errorCodeResolver;
+    private ValidationErrorFactory errorFactory;
 
     @InjectMocks
     DateToLessThenFromValidation validation;
@@ -32,25 +30,25 @@ public class DateToLessThenFromValidationTest {
 
         when(request.getAgreementDateFrom()).thenReturn(LocalDate.of(2025, 03, 20));
         when(request.getAgreementDateTo()).thenReturn(LocalDate.of(2025, 02, 10));
-        when(errorCodeResolver.getErrorDescription("ERROR_CODE_3"))
-                .thenReturn("agreementDateTo must be less than agreementDateTo!");
+        ValidationError validationError = mock(ValidationError.class);
+        when(errorFactory.buildError("ERROR_CODE_3"))
+                .thenReturn(validationError);
 
         Optional<ValidationError> errorOpt = validation.execute(request);
         assertTrue(errorOpt.isPresent());
-        assertEquals("ERROR_CODE_3", errorOpt.get().getErrorCode());
-        assertEquals("agreementDateTo must be less than agreementDateTo!", errorOpt.get().getDescription());
+        assertSame(errorOpt.get(), validationError);
     }
     @Test
     public void shouldReturnErrorWhenDateToEqualsFrom() {
         TravelCalculatePremiumRequest request = mock(TravelCalculatePremiumRequest.class);
         when(request.getAgreementDateFrom()).thenReturn(LocalDate.of(2025, 03, 20));
         when(request.getAgreementDateTo()).thenReturn(LocalDate.of(2025, 03, 20));
-        when(errorCodeResolver.getErrorDescription("ERROR_CODE_3"))
-                .thenReturn("agreementDateTo must be less than agreementDateTo!");
+        ValidationError validationError = mock(ValidationError.class);
+        when(errorFactory.buildError("ERROR_CODE_3"))
+                .thenReturn(validationError);
 
         Optional<ValidationError> errorOpt = validation.execute(request);
         assertTrue(errorOpt.isPresent());
-        assertEquals("ERROR_CODE_3", errorOpt.get().getErrorCode());
-        assertEquals("agreementDateTo must be less than agreementDateTo!", errorOpt.get().getDescription());
+        assertSame(errorOpt.get(), validationError);
     }
 }

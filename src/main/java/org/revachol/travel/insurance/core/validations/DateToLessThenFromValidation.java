@@ -14,7 +14,7 @@ import java.util.Optional;
 @RequiredArgsConstructor(access = AccessLevel.PACKAGE)
 public class DateToLessThenFromValidation implements TravelRequestValidation{
 
-    private final ErrorCodeResolver errorCodeResolver;
+    private final ValidationErrorFactory errorFactory;
 
 
     @Override
@@ -22,11 +22,7 @@ public class DateToLessThenFromValidation implements TravelRequestValidation{
         LocalDate dateFrom = request.getAgreementDateFrom();
         LocalDate dateTo = request.getAgreementDateTo();
         return (dateFrom != null && dateTo != null && (dateTo.isBefore(dateFrom) || dateTo.equals(dateFrom)))
-                ? Optional.of(buildError("ERROR_CODE_3"))
+                ? Optional.of(errorFactory.buildError("ERROR_CODE_3"))
                 : Optional.empty();
-    }
-    private ValidationError buildError(String errorCode) {
-        String errorDescription = errorCodeResolver.getErrorDescription(errorCode);
-        return new ValidationError(errorCode, errorDescription);
     }
 }

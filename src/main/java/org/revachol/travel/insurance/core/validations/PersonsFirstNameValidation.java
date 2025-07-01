@@ -13,18 +13,13 @@ import java.util.Optional;
 @RequiredArgsConstructor(access = AccessLevel.PACKAGE)
 public class PersonsFirstNameValidation implements TravelRequestValidation {
 
-    private final ErrorCodeResolver errorCodeResolver;
+    private final ValidationErrorFactory errorFactory;
 
     @Override
     public Optional<ValidationError> execute(TravelCalculatePremiumRequest request) {
         return (request.getPersonFirstName() == null || request.getPersonFirstName().isEmpty())
-                ? Optional.of(buildError("ERROR_CODE_5"))
+                ? Optional.of(errorFactory.buildError("ERROR_CODE_5"))
                 : Optional.empty();
-    }
-
-    private ValidationError buildError(String errorCode) {
-        String errorDescription = errorCodeResolver.getErrorDescription(errorCode);
-        return new ValidationError(errorCode, errorDescription);
     }
 }
 
