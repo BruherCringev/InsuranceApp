@@ -1,0 +1,146 @@
+package org.revachol.travel.insurance.core;
+
+
+import org.revachol.travel.insurance.core.validations.TravelCalculatePremiumRequestValidator;
+import org.revachol.travel.insurance.rest.TravelCalculatePremiumRequest;
+import org.revachol.travel.insurance.rest.ValidationError;
+import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.extension.ExtendWith;
+import org.mockito.InjectMocks;
+import org.mockito.Mock;
+import org.mockito.junit.jupiter.MockitoExtension;
+
+import static org.junit.jupiter.api.Assertions.*;
+import static org.mockito.Mockito.verifyNoInteractions;
+import static org.mockito.Mockito.when;
+
+
+import java.math.BigDecimal;
+import java.time.LocalDate;
+import java.util.List;
+
+
+@ExtendWith(MockitoExtension.class)
+class TravelCalculatePremiumServiceImplTest {
+
+    @Mock
+    private TravelCalculatePremiumRequestValidator requestValidator;
+    @Mock
+    private TravelPremiumUnderwriting premiumUnderwriting;
+
+    @InjectMocks
+    private TravelCalculatePremiumServiceImpl service;
+
+    @Test
+    public void shouldReturnPersonsFirstName() {
+        var request = createFields();
+        when(premiumUnderwriting.calculatePremium(request)).thenReturn(BigDecimal.valueOf(25));
+        when(requestValidator.validate(request)).thenReturn(List.of());
+        var response = service.calculatePremium(request);
+        assertEquals(response.getPersonFirstName(), request.getPersonFirstName());
+    }
+
+    @Test
+    public void shouldReturnPersonsLastName() {
+        var request = createFields();
+        when(premiumUnderwriting.calculatePremium(request)).thenReturn(BigDecimal.valueOf(25));
+        when(requestValidator.validate(request)).thenReturn(List.of());
+        var response = service.calculatePremium(request);
+
+        assertEquals(response.getPersonLastName(), request.getPersonLastName());
+    }
+
+    @Test
+    public void shouldReturnCorrectAgreementDateFrom() {
+        var request = createFields();
+        when(premiumUnderwriting.calculatePremium(request)).thenReturn(BigDecimal.valueOf(25));
+        when(requestValidator.validate(request)).thenReturn(List.of());
+        var response = service.calculatePremium(request);
+
+        assertEquals(response.getAgreementDateFrom(), request.getAgreementDateFrom());
+    }
+
+    @Test
+    public void shouldReturnCorrectAgreementDateTo() {
+        var request = createFields();
+        when(premiumUnderwriting.calculatePremium(request)).thenReturn(BigDecimal.valueOf(25));
+        when(requestValidator.validate(request)).thenReturn(List.of());
+        var response = service.calculatePremium(request);
+
+        assertEquals(response.getAgreementDateTo(), request.getAgreementDateTo());
+    }
+
+    @Test
+    public void shouldReturnCorrectAgreementPrice() {
+        var request = createFields();
+
+        when(premiumUnderwriting.calculatePremium(request)).thenReturn(BigDecimal.valueOf(25));
+        when(requestValidator.validate(request)).thenReturn(List.of());
+        var response = service.calculatePremium(request);
+
+        assertEquals(BigDecimal.valueOf(25), response.getAgreementPrice());
+    }
+
+    @Test
+    public void shouldReturnResponseWithErrors() {
+        var request = createFields();
+        var validationError = new ValidationError("field", "message");
+        when(requestValidator.validate(request)).thenReturn(List.of(validationError));
+        var response = service.calculatePremium(request);
+        assertTrue(response.hasErrors());
+    }
+
+    @Test
+    public void shouldReturnTheCorrectError() {
+        var request = createFields();
+        var validationError = new ValidationError("field", "message");
+        when(requestValidator.validate(request)).thenReturn(List.of(validationError));
+        var response = service.calculatePremium(request);
+        assertEquals("field", response.getErrors().getFirst().getField());
+        assertEquals("message", response.getErrors().getFirst().getMessage());
+        assertNull(response.getPersonFirstName());
+    }
+
+    @Test
+    public void shouldReturnResponseWithCorrectErrorCount() {
+        var request = new TravelCalculatePremiumRequest();
+        var validationError = new ValidationError("field", "message");
+        when(requestValidator.validate(request)).thenReturn(List.of(validationError));
+        var response = service.calculatePremium(request);
+        assertEquals(1, response.getErrors().size());
+    }
+
+    @Test
+    public void allFieldsMustBeEmptyWhenResponseContainsError() {
+        var request = new TravelCalculatePremiumRequest();
+        var validationError = new ValidationError("field", "message");
+        when(requestValidator.validate(request)).thenReturn(List.of(validationError));
+        var response = service.calculatePremium(request);
+        assertNull(response.getPersonFirstName());
+        assertNull(response.getPersonLastName());
+        assertNull(response.getAgreementDateFrom());
+        assertNull(response.getAgreementDateTo());
+        assertNull(response.getAgreementPrice());
+    }
+
+    @Test
+    public void shouldNOtBeInteractionWithDateTimeServiceWhenResponseContainsError() {
+        var request = new TravelCalculatePremiumRequest();
+        var validationError = new ValidationError("field", "message");
+        when(requestValidator.validate(request)).thenReturn(List.of(validationError));
+        var response = service.calculatePremium(request);
+        verifyNoInteractions(premiumUnderwriting);
+    }
+
+    private TravelCalculatePremiumRequest createFields() {
+        var request = new TravelCalculatePremiumRequest();
+        request.setPersonFirstName("Greg");
+        request.setPersonLastName("Ismailov");
+        request.setAgreementDateFrom(LocalDate.of(2025, 3, 31));
+        request.setAgreementDateTo(LocalDate.of(2025, 4, 25));
+        return request;
+    }
+}
+
+
+
