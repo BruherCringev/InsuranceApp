@@ -3,6 +3,7 @@ package org.revachol.travel.insurance.rest;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
+import org.revachol.travel.insurance.core.ErrorCodeResolver;
 import org.skyscreamer.jsonassert.JSONAssert;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
@@ -29,6 +30,9 @@ public class TravelCalculatePremiumControllerTest {
 
     @Autowired
     private JsonFileReader jsonFileReader;
+
+    @Autowired
+    private ErrorCodeResolver errorCodeResolver;
 
     private void performAndAssert(String requestPath, String responsePath) throws Exception {
         String requestJson = jsonFileReader.readJsonFromFile(requestPath);

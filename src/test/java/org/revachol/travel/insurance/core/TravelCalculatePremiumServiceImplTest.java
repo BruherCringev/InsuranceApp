@@ -36,8 +36,10 @@ class TravelCalculatePremiumServiceImplTest {
         var request = createFields();
         when(premiumUnderwriting.calculatePremium(request)).thenReturn(BigDecimal.valueOf(25));
         when(requestValidator.validate(request)).thenReturn(List.of());
+
         var response = service.calculatePremium(request);
-        assertEquals(response.getPersonFirstName(), request.getPersonFirstName());
+
+        assertEquals(request.getPersonFirstName(), response.getPersonFirstName());
     }
 
     @Test
@@ -45,9 +47,10 @@ class TravelCalculatePremiumServiceImplTest {
         var request = createFields();
         when(premiumUnderwriting.calculatePremium(request)).thenReturn(BigDecimal.valueOf(25));
         when(requestValidator.validate(request)).thenReturn(List.of());
+
         var response = service.calculatePremium(request);
 
-        assertEquals(response.getPersonLastName(), request.getPersonLastName());
+        assertEquals(request.getPersonLastName(), response.getPersonLastName());
     }
 
     @Test
@@ -55,9 +58,10 @@ class TravelCalculatePremiumServiceImplTest {
         var request = createFields();
         when(premiumUnderwriting.calculatePremium(request)).thenReturn(BigDecimal.valueOf(25));
         when(requestValidator.validate(request)).thenReturn(List.of());
+
         var response = service.calculatePremium(request);
 
-        assertEquals(response.getAgreementDateFrom(), request.getAgreementDateFrom());
+        assertEquals(request.getAgreementDateFrom(), response.getAgreementDateFrom());
     }
 
     @Test
@@ -65,17 +69,18 @@ class TravelCalculatePremiumServiceImplTest {
         var request = createFields();
         when(premiumUnderwriting.calculatePremium(request)).thenReturn(BigDecimal.valueOf(25));
         when(requestValidator.validate(request)).thenReturn(List.of());
+
         var response = service.calculatePremium(request);
 
-        assertEquals(response.getAgreementDateTo(), request.getAgreementDateTo());
+        assertEquals(request.getAgreementDateTo(), response.getAgreementDateTo());
     }
 
     @Test
     public void shouldReturnCorrectAgreementPrice() {
         var request = createFields();
-
         when(premiumUnderwriting.calculatePremium(request)).thenReturn(BigDecimal.valueOf(25));
         when(requestValidator.validate(request)).thenReturn(List.of());
+
         var response = service.calculatePremium(request);
 
         assertEquals(BigDecimal.valueOf(25), response.getAgreementPrice());
@@ -84,38 +89,46 @@ class TravelCalculatePremiumServiceImplTest {
     @Test
     public void shouldReturnResponseWithErrors() {
         var request = createFields();
-        var validationError = new ValidationError("field", "message");
+        var validationError = new ValidationError("ERROR_CODE_1", "description");
         when(requestValidator.validate(request)).thenReturn(List.of(validationError));
+
         var response = service.calculatePremium(request);
+
         assertTrue(response.hasErrors());
     }
 
     @Test
     public void shouldReturnTheCorrectError() {
         var request = createFields();
-        var validationError = new ValidationError("field", "message");
+        var validationError = new ValidationError("ERROR_CODE_1", "description");
         when(requestValidator.validate(request)).thenReturn(List.of(validationError));
+
         var response = service.calculatePremium(request);
-        assertEquals("field", response.getErrors().getFirst().getField());
-        assertEquals("message", response.getErrors().getFirst().getMessage());
+
+        assertEquals("ERROR_CODE_1", response.getErrors().getFirst().getErrorCode());
+        assertEquals("description", response.getErrors().getFirst().getDescription());
         assertNull(response.getPersonFirstName());
     }
 
     @Test
     public void shouldReturnResponseWithCorrectErrorCount() {
         var request = new TravelCalculatePremiumRequest();
-        var validationError = new ValidationError("field", "message");
+        var validationError = new ValidationError("ERROR_CODE_1", "description");
         when(requestValidator.validate(request)).thenReturn(List.of(validationError));
+
         var response = service.calculatePremium(request);
+
         assertEquals(1, response.getErrors().size());
     }
 
     @Test
     public void allFieldsMustBeEmptyWhenResponseContainsError() {
         var request = new TravelCalculatePremiumRequest();
-        var validationError = new ValidationError("field", "message");
+        var validationError = new ValidationError("ERROR_CODE_1", "description");
         when(requestValidator.validate(request)).thenReturn(List.of(validationError));
+
         var response = service.calculatePremium(request);
+
         assertNull(response.getPersonFirstName());
         assertNull(response.getPersonLastName());
         assertNull(response.getAgreementDateFrom());
@@ -124,11 +137,13 @@ class TravelCalculatePremiumServiceImplTest {
     }
 
     @Test
-    public void shouldNOtBeInteractionWithDateTimeServiceWhenResponseContainsError() {
+    public void shouldNotInteractWithPremiumUnderwritingWhenErrorsPresent() {
         var request = new TravelCalculatePremiumRequest();
-        var validationError = new ValidationError("field", "message");
+        var validationError = new ValidationError("ERROR_CODE_1", "description");
         when(requestValidator.validate(request)).thenReturn(List.of(validationError));
+
         var response = service.calculatePremium(request);
+
         verifyNoInteractions(premiumUnderwriting);
     }
 
@@ -141,6 +156,3 @@ class TravelCalculatePremiumServiceImplTest {
         return request;
     }
 }
-
-
-
