@@ -2,8 +2,8 @@ package org.revachol.travel.insurance.core.validations;
 
 import lombok.AccessLevel;
 import lombok.RequiredArgsConstructor;
-import org.revachol.travel.insurance.rest.TravelCalculatePremiumRequest;
-import org.revachol.travel.insurance.rest.ValidationError;
+import org.revachol.travel.insurance.dto.TravelCalculatePremiumRequest;
+import org.revachol.travel.insurance.dto.ValidationError;
 import org.springframework.stereotype.Component;
 
 import java.util.List;

@@ -4,8 +4,8 @@ import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
-import org.revachol.travel.insurance.rest.TravelCalculatePremiumRequest;
-import org.revachol.travel.insurance.rest.ValidationError;
+import org.revachol.travel.insurance.dto.TravelCalculatePremiumRequest;
+import org.revachol.travel.insurance.dto.ValidationError;
 import org.junit.jupiter.api.Test;
 
 import java.time.LocalDate;

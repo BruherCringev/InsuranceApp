@@ -1,7 +1,7 @@
 package org.revachol.travel.insurance.core.validations;
 
-import org.revachol.travel.insurance.rest.TravelCalculatePremiumRequest;
-import org.revachol.travel.insurance.rest.ValidationError;
+import org.revachol.travel.insurance.dto.TravelCalculatePremiumRequest;
+import org.revachol.travel.insurance.dto.ValidationError;
 
 import java.util.List;
 

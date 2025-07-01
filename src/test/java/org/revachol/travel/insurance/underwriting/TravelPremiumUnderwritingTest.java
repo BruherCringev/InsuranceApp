@@ -1,6 +1,8 @@
-package org.revachol.travel.insurance.core;
+package org.revachol.travel.insurance.underwriting;
 
-import org.revachol.travel.insurance.rest.TravelCalculatePremiumRequest;
+import org.revachol.travel.insurance.core.underwriting.TravelPremiumUnderwritingImpl;
+import org.revachol.travel.insurance.core.util.DateTimeService;
+import org.revachol.travel.insurance.dto.TravelCalculatePremiumRequest;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
@@ -21,7 +23,7 @@ public class TravelPremiumUnderwritingTest {
     private DateTimeService dateTimeService;
 
     @InjectMocks
-    private TravelPremiumUnderwriting premiumUnderwriting;
+    private TravelPremiumUnderwritingImpl premiumUnderwriting;
 
     @Test
     public void shouldReturnCorrectAgreementPrice() {

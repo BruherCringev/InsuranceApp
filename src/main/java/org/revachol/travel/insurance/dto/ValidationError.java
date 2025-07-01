@@ -1,4 +1,4 @@
-package org.revachol.travel.insurance.rest;
+package org.revachol.travel.insurance.dto;
 
 import lombok.AllArgsConstructor;
 import lombok.Getter;

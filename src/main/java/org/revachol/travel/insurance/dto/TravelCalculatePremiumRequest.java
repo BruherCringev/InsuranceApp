@@ -1,4 +1,4 @@
-package org.revachol.travel.insurance.rest;
+package org.revachol.travel.insurance.dto;
 
 
 import com.fasterxml.jackson.annotation.JsonProperty;

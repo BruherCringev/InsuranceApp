@@ -1,4 +1,4 @@
-package org.revachol.travel.insurance.core;
+package org.revachol.travel.insurance.core.util;
 
 import org.springframework.core.io.ClassPathResource;
 import org.springframework.core.io.Resource;

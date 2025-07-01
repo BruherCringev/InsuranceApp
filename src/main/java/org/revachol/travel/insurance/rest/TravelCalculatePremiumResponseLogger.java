@@ -4,6 +4,7 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import lombok.AccessLevel;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.revachol.travel.insurance.dto.TravelCalculatePremiumResponse;
 import org.springframework.stereotype.Component;
 
 @Component

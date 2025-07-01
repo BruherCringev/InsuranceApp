@@ -1,9 +1,10 @@
-package org.revachol.travel.insurance.core;
+package org.revachol.travel.insurance.core.services;
 
 
+import org.revachol.travel.insurance.core.underwriting.TravelPremiumUnderwriting;
 import org.revachol.travel.insurance.core.validations.TravelCalculatePremiumRequestValidator;
-import org.revachol.travel.insurance.rest.TravelCalculatePremiumRequest;
-import org.revachol.travel.insurance.rest.ValidationError;
+import org.revachol.travel.insurance.dto.TravelCalculatePremiumRequest;
+import org.revachol.travel.insurance.dto.ValidationError;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;

@@ -1,18 +1,20 @@
-package org.revachol.travel.insurance.core;
+package org.revachol.travel.insurance.core.underwriting;
 
 import lombok.AccessLevel;
 import lombok.RequiredArgsConstructor;
-import org.revachol.travel.insurance.rest.TravelCalculatePremiumRequest;
+import org.revachol.travel.insurance.core.util.DateTimeService;
+import org.revachol.travel.insurance.dto.TravelCalculatePremiumRequest;
 import org.springframework.stereotype.Component;
 
 import java.math.BigDecimal;
 
 @Component
 @RequiredArgsConstructor(access = AccessLevel.PACKAGE)
-class TravelPremiumUnderwriting {
+public class TravelPremiumUnderwritingImpl implements TravelPremiumUnderwriting{
+
     private final DateTimeService dateTimeService;
 
-    BigDecimal calculatePremium(TravelCalculatePremiumRequest request) {
+    public BigDecimal calculatePremium(TravelCalculatePremiumRequest request) {
         var daysBetween = dateTimeService.calculateDaysBetween(
                 request.getAgreementDateFrom(),
                 request.getAgreementDateTo()
@@ -21,3 +23,4 @@ class TravelPremiumUnderwriting {
     }
 
 }
+

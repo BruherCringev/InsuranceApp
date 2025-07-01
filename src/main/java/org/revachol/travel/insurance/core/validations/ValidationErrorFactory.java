@@ -2,8 +2,8 @@ package org.revachol.travel.insurance.core.validations;
 
 import lombok.AccessLevel;
 import lombok.RequiredArgsConstructor;
-import org.revachol.travel.insurance.core.ErrorCodeResolver;
-import org.revachol.travel.insurance.rest.ValidationError;
+import org.revachol.travel.insurance.core.util.ErrorCodeResolver;
+import org.revachol.travel.insurance.dto.ValidationError;
 import org.springframework.stereotype.Component;
 
 

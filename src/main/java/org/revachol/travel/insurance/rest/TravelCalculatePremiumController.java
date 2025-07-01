@@ -2,7 +2,9 @@ package org.revachol.travel.insurance.rest;
 
 import lombok.AccessLevel;
 import lombok.RequiredArgsConstructor;
-import org.revachol.travel.insurance.core.TravelCalculatePremiumService;
+import org.revachol.travel.insurance.core.services.TravelCalculatePremiumService;
+import org.revachol.travel.insurance.dto.TravelCalculatePremiumRequest;
+import org.revachol.travel.insurance.dto.TravelCalculatePremiumResponse;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;

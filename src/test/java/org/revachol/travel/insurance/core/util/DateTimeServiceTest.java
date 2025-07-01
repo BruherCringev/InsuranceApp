@@ -1,4 +1,4 @@
-package org.revachol.travel.insurance.core;
+package org.revachol.travel.insurance.core.util;
 
 import org.junit.jupiter.api.Test;
 
